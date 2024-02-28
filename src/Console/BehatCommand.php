@@ -75,7 +75,7 @@ class BehatCommand extends Command
             $this->teardownBehatEnviroment();
         });
 
-        return true;
+        return self::SUCCESS;
     }
 
     /**
