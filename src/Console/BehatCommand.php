@@ -54,11 +54,14 @@ class BehatCommand extends Command
 
         $this->setupBehatEnvironment();
 
-        $this->startHttpServer(function () {
-            $behatProcess = (new Process(array_merge(
-                $this->binary(), $this->behatArguments($_SERVER['argv'])
-            )))->setTimeout(null);
+        $behatProcess = (new Process(
+            array_merge(
+                $this->binary(),
+                $this->behatArguments($_SERVER["argv"])
+            )
+        ))->setTimeout(null);
 
+        $this->startHttpServer(function () use ($behatProcess) {
             try {
                 $behatProcess->setTty(true);
             } catch (RuntimeException $e) {
@@ -75,7 +78,7 @@ class BehatCommand extends Command
             $this->teardownBehatEnviroment();
         });
 
-        return self::SUCCESS;
+        return $behatProcess->getExitCode();
     }
 
     /**
